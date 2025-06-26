@@ -1,15 +1,13 @@
 package com.isofttz.yeriko_backend.model;
 
 import com.isofttz.yeriko_backend.entities.Users;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class AuthResponseModel {
     private int statusCode;
 

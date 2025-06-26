@@ -7,6 +7,7 @@
 /Users/HP/Documents/GitHub/yeriko_backend/src/main/java/com/isofttz/yeriko_backend/model/GlobalExceptionHandler.java
 /Users/HP/Documents/GitHub/yeriko_backend/src/main/java/com/isofttz/yeriko_backend/model/ResponseModel.java
 /Users/HP/Documents/GitHub/yeriko_backend/src/main/java/com/isofttz/yeriko_backend/repository/AppUserRepository.java
+/Users/HP/Documents/GitHub/yeriko_backend/src/main/java/com/isofttz/yeriko_backend/resources/graphql/dto/LoginDTOInput.java
 /Users/HP/Documents/GitHub/yeriko_backend/src/main/java/com/isofttz/yeriko_backend/security/JWTEntryPoint.java
 /Users/HP/Documents/GitHub/yeriko_backend/src/main/java/com/isofttz/yeriko_backend/security/JwtAuthFilter.java
 /Users/HP/Documents/GitHub/yeriko_backend/src/main/java/com/isofttz/yeriko_backend/security/JwtTokenProvider.java

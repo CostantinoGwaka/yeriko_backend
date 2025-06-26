@@ -3,10 +3,13 @@ package com.isofttz.yeriko_backend.controller;
 import com.isofttz.yeriko_backend.entities.Users;
 import com.isofttz.yeriko_backend.model.AuthResponseModel;
 import com.isofttz.yeriko_backend.model.ResponseModel;
+import com.isofttz.yeriko_backend.resources.graphql.dto.LoginDTOInput;
 import com.isofttz.yeriko_backend.security.JwtTokenProvider;
 import com.isofttz.yeriko_backend.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,6 +17,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,8 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
-@RestController
-@RequestMapping("/api/auth")
+@Controller
+//@RequestMapping("/api/auth")
 public class AuthController {
 
     @Value("${app.jwt-expiration-milliseconds}")
@@ -37,40 +41,38 @@ public class AuthController {
     @Autowired
     UserServices userServices;
 
-    @PostMapping("/login")
-    public ResponseEntity<AuthResponseModel> login(@RequestBody Users user){
-        System.out.print("-------------login start here-------------------");
-        final AuthResponseModel authResponseModel;
+    @MutationMapping
+    public AuthResponseModel login(@Argument LoginDTOInput input){
+        System.out.print("-------------GraphQL login start here-------------------");
 
-
-        final Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                user.getUserName(),user.getPassword()
-        ));
-
-        User userDetails = (User) authentication.getPrincipal();
-
-        Optional<Users> optionalUser = userServices.findByUserName(userDetails.getUsername());
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token =jwtTokenProvider.generateToken(authentication);
-
-        System.out.print("-------------path start here-------------------");
-
-
-        if (optionalUser.isPresent()) {
-            Users userInfo = optionalUser.get();
-            authResponseModel =new AuthResponseModel(
-                    HttpStatus.OK.value(),
-                    "Succesfully logged in",
-                    token,
-                    System.currentTimeMillis(),
-                    expiration,
-                    userInfo
+        try {
+            final Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(input.getUserName(), input.getPassword())
             );
-            return ResponseEntity.ok(authResponseModel);
-        }else{
-                // Handle the case where user is not found
+
+            User userDetails = (User) authentication.getPrincipal();
+            Optional<Users> optionalUser = userServices.findByUserName(userDetails.getUsername());
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String token = jwtTokenProvider.generateToken(authentication);
+
+            System.out.print("-------------GraphQL path start here-------------------");
+
+            if (optionalUser.isPresent()) {
+                Users userInfo = optionalUser.get();
+                return new AuthResponseModel(
+                        200,
+                        "Successfully logged in",
+                        token,
+                        System.currentTimeMillis(),
+                        expiration,
+                        userInfo
+                );
+            } else {
                 throw new RuntimeException("User not found");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Authentication failed: " + e.getMessage());
         }
     }
 
