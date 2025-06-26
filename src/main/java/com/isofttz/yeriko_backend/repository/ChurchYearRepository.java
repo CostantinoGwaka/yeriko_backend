@@ -3,6 +3,7 @@ package com.isofttz.yeriko_backend.repository;
 import com.isofttz.yeriko_backend.controller.ChurchYear;
 import com.isofttz.yeriko_backend.entities.ChurchYearEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -17,5 +18,9 @@ public interface ChurchYearRepository extends JpaRepository<ChurchYearEntity,Lon
 
     @Query("SELECT c FROM ChurchYearEntity c WHERE c.isActive = true")
     ChurchYearEntity findActiveChurchYearEntity();
+
+    @Modifying
+    @Query("UPDATE ChurchYearEntity c SET c.isActive = false WHERE c.isActive = true")
+    void deactivateAllChurchYears();
 
 }
