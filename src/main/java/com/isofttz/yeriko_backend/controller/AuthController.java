@@ -7,7 +7,6 @@ import com.isofttz.yeriko_backend.security.JwtTokenProvider;
 import com.isofttz.yeriko_backend.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
-@Controller
+@RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
@@ -39,7 +38,7 @@ public class AuthController {
     @Autowired
     UserServices userServices;
 
-    @MutationMapping
+    @PostMapping("/login")
     public ResponseEntity<AuthResponseModel> login(@RequestBody Users user){
         System.out.print("-------------login start here-------------------");
         final AuthResponseModel authResponseModel;
