@@ -1,5 +1,6 @@
 package com.isofttz.yeriko_backend.controller;
 
+import com.isofttz.yeriko_backend.entities.ChurchTimeTableEntity;
 import com.isofttz.yeriko_backend.entities.Users;
 import com.isofttz.yeriko_backend.model.AuthResponseModel;
 import com.isofttz.yeriko_backend.model.ResponseModel;
@@ -15,11 +16,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -96,6 +95,17 @@ public class AuthController {
     public ResponseModel<Users> registerUser(@RequestBody Users users){
         final Users savedUser = userServices.registerUser(users);
         return new ResponseModel<>(HttpStatus.OK.value(), "user registered successfully",savedUser);
+    }
+
+    @GetMapping("/getAllUsers")
+    public ResponseModel<List<Users>> getAllUsers(){
+        final List<Users> savedUsers = userServices.getAllRegisteredUser();
+
+        if(savedUsers.isEmpty()){
+            return new ResponseModel<>(HttpStatus.NOT_FOUND.value(),"Saved Users not found",savedUsers);
+        }else{
+            return new ResponseModel<>(HttpStatus.OK.value(), "Saved Users successfully",savedUsers);
+        }
     }
 
 
