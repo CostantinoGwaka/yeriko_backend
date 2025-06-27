@@ -36,5 +36,8 @@ public class Users {
     private String createdAt;
 
     @Column(nullable = false)
+    private String yearRegistered;
+
+    @Column(nullable = false)
     private String role;
 }

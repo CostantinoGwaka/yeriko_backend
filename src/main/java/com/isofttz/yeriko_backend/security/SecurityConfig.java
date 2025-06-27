@@ -41,7 +41,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**")
                         .permitAll()
                         .requestMatchers("/api/churchYear/**").authenticated()
-//                        .requestMatchers("/api/budget/**").authenticated()
+                        .requestMatchers("/api/monthly/**").authenticated()
 //                        .requestMatchers("/api/budget/**").authenticated()
 //                        .requestMatchers("/api/category/**").authenticated()
 //                        .requestMatchers("/api/income/**").authenticated()
