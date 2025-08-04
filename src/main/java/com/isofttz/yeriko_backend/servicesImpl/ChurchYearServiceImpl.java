@@ -44,6 +44,11 @@ public class ChurchYearServiceImpl implements ChurchYearServices {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Year not found!");
         }
 
+        // If the new year is marked as active, deactivate all others first
+        if (Boolean.TRUE.equals(year.getIsActive())) {
+            churchYearRepository.deactivateAllChurchYears();
+        }
+
         updatedChurchYear = churchYearRepository.save(year);
         return updatedChurchYear;
     }

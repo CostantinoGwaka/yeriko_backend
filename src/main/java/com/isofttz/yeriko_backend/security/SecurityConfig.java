@@ -43,6 +43,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/churchYear/**").authenticated()
                         .requestMatchers("/api/monthly/**").authenticated()
                         .requestMatchers("/api/churchTimeTable/**").authenticated()
+                                .requestMatchers("/api/churchYear/getActiveYear").permitAll()
+
 //                        .requestMatchers("/api/category/**").authenticated()
 //                        .requestMatchers("/api/income/**").authenticated()
 //                        .requestMatchers("/api/transactions/**").authenticated()
